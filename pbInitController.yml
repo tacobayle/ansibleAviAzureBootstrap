@@ -1,0 +1,43 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+
+  vars_files:
+    - "vars/params.yml"
+    - "vars/creds.yml"
+
+  roles:
+    - role: "avinetworks.avisdk"
+
+  tasks:
+
+    - name: Update user password
+      avi_useraccount:
+        controller: "{{ avi_credentials.controller }}"
+        username: "{{ avi_credentials.username }}"
+        password: "{{ aviPassword }}"
+        old_password: 58NFaGDJm(PJH0G
+        api_version: "{{ avi_credentials.api_version }}"
+      ignore_errors: yes
+      tags:
+        - password
+
+    - set_fact:
+        avi_credentials: >
+                          {'api_version': "{{ avi_credentials.api_version }}",
+                           'controller': "{{ avi_credentials.controller }}",
+                           'password': "{{ aviPassword }}",
+                           'username': "{{ avi_credentials.username }}"}
+      delegate_to: 127.0.0.1
+      run_once: true
+      tags:
+        - creds
+
+    - name: save json creds
+      copy:
+        content: '{"avi_credentials": {{ avi_credentials }} }'
+        dest: "../aviAzureCloud/vars/creds.json"
+      tags:
+        - creds

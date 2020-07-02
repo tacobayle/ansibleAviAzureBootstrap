@@ -1,0 +1,5 @@
+avi_cluster: false
+avi_credentials:
+  api_version: 18.2.8
+  controller: 172.16.1.5
+  username: admin
