@@ -38,6 +38,7 @@
     - name: save json creds
       copy:
         content: '{"avi_credentials": {{ avi_credentials }} }'
-        dest: "../aviAzureCloud/vars/creds.json"
+        dest: "{{ item }}"
+      loop: "{{ credsFile }}"
       tags:
         - creds

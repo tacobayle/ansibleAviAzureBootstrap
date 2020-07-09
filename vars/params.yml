@@ -1,1 +1,4 @@
 aviPassword: Avi_2020
+credsFile:
+  - ../aviAzureCloud/vars/creds.json
+  - ../aviGslb/vars/creds.json
